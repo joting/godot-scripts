@@ -27,5 +27,6 @@ zip -q -9 -r release-${FILE_VERSION}/Godot_v${FILE_VERSION}_export_templates.tpz
 mkdir -p mono/release-${FILE_VERSION}
 rm -f mono/release-${FILE_VERSION}/*templates.tpz
 cd mono
+echo "$VERSION".mono > templates/version.txt
 zip -q -9 -r release-${FILE_VERSION}/Godot_v${FILE_VERSION}_mono_export_templates.tpz templates
 cd ..
