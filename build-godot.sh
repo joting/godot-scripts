@@ -68,8 +68,8 @@ function ubuntu_32 {
   mkdir -p mono/templates
   rm -f mono/templates/*linux*32*
 
-  cp godot-ubuntu-32/godot.x11.opt.debug.32.mono templates/linux_x11_32_debug
-  cp godot-ubuntu-32/godot.x11.opt.32.mono templates/linux_x11_32_release
+  cp godot-ubuntu-32/godot.x11.opt.debug.32.mono mono/templates/linux_x11_32_debug
+  cp godot-ubuntu-32/godot.x11.opt.32.mono mono/templates/linux_x11_32_release
 }
 
 function ubuntu_64 {
@@ -121,9 +121,8 @@ function ubuntu_64 {
   mkdir -p mono/templates
   rm -f mono/templates/*linux*64*
 
-  cp godot-ubuntu-64/godot.x11.opt.debug.64.mono templates/linux_x11_64_debug
-  cp godot-ubuntu-64/godot.x11.opt.64.mono templates/linux_x11_64_release
-
+  cp godot-ubuntu-64/godot.x11.opt.debug.64.mono mono/templates/linux_x11_64_debug
+  cp godot-ubuntu-64/godot.x11.opt.64.mono mono/templates/linux_x11_64_release
 } 
 
 function windows {
