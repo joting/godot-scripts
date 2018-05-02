@@ -1,0 +1,13 @@
+angle*
+godot-android/
+godot-javascript/
+godot-macosx/
+godot-mono-glue/
+godot-ubuntu-32/
+godot-ubuntu-64/
+godot-windows/
+mono-glue/
+release-*
+templates
+
+*.swp
