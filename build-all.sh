@@ -1,13 +1,24 @@
 #!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "usage: $0 <version> <file version>"
+  echo "  like : $0 3.0.3.rc1 3.0.3-rc1"
+fi
+
+if [ -z "$2" ]; then
+  echo "usage: $0 <version> <file version>"
+  echo "  like : $0 3.0.3.rc1 3.0.3-rc1"
+fi
+
 VERSION=$1
 FILE_VERSION=$2
 
 # ./build-godot.sh mono-glue
-echo "windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P2 -n1 -I{} ./build-godot.sh {} $2
+echo "windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P2 -n1 -I{} ./build-godot.sh {} $FILE_VERSION
 
-echo "$1" > templates/version.txt
+echo "$VERSION" > templates/version.txt
 
-mkdir -p release-$2
-rm -f release-$2/*templates.tpz
-zip -q -9 -r release-$1/Godot_v$2_export_templates.tpz templates
+mkdir -p release-${FILE_VERSION}
+rm -f release-${FILE_VERSION}/*templates.tpz
+zip -q -9 -r release-${FILE_VERSION}/Godot_v${FILE_VERSION}_export_templates.tpz templates
 

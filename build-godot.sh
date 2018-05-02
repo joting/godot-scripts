@@ -26,69 +26,90 @@ function mono-glue {
 
 function ubuntu_32 {
   echo "booting ubuntu 32 "
-#  mkdir -p godot-ubuntu-32
-#  sudo virsh start godot-ubuntu14.04-32 || /bin/true
-#
-#  while ! tcping -t 1 192.168.112.183 22 :>/dev/null; do
-#    sleep 1
-#  done
-#
-#  sleep 30s
-#
-#  scp $SSHOPTS build-godot-ubuntu-32.sh user@192.168.112.183:~/build-godot.sh
-#  scp $SSHOPTS -r mono-glue user@192.168.112.183:~/
-#  ssh $SSHOPTS user@192.168.112.183 bash build-godot.sh
-#  scp $SSHOPTS user@192.168.112.183:~/godot/bin/* godot-ubuntu-32
-#  ssh $SSHOPTS user@192.168.112.183 sudo shutdown -h now || /bin/true
+  mkdir -p godot-ubuntu-32
+  sudo virsh start godot-ubuntu14.04-32 || /bin/true
+
+  while ! tcping -t 1 192.168.112.183 22 :>/dev/null; do
+    sleep 1
+  done
+
+  sleep 30s
+
+  scp $SSHOPTS build-godot-ubuntu-32.sh user@192.168.112.183:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue user@192.168.112.183:~/
+  ssh $SSHOPTS user@192.168.112.183 bash build-godot.sh
+  scp $SSHOPTS user@192.168.112.183:~/godot/bin/* godot-ubuntu-32
+  ssh $SSHOPTS user@192.168.112.183 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm linux_x11_32*
 
   cp godot-ubuntu-32/godot.x11.opt.debug.32 templates/linux_x11_32_debug
   cp godot-ubuntu-32/godot.x11.opt.32 templates/linux_x11_32_release
+
+  mkdir -p release-${GODOT_VERSION}
+  rm -f release-${GODOT_VERSION}/*linux*32*
+
+  cp godot-ubuntu-32/godot.x11.opt.32 Godot_v${GODOT_VERSION}_x11.32
+  zip -q -9 Godot_v${GODOT_VERSION}_x11.32.zip Godot_v${GODOT_VERSION}_x11.32
+  mv Godot_v${GODOT_VERSION}_x11.32.zip release-${GODOT_VERSION}
+  rm Godot_v${GODOT_VERSION}_x11.32
 }
 
 function ubuntu_64 {
   echo "booting ubuntu 64 "
-#  mkdir -p godot-ubuntu-64
-#  sudo virsh start godot-ubuntu14.04-64 || /bin/true
-#
-#  while ! tcping -t 1 192.168.112.195 22 &>/dev/null; do
-#    sleep 1
-#  done
-#
-#  sleep 30s
-#
-#  scp $SSHOPTS build-godot-ubuntu-64.sh user@192.168.112.195:~/build-godot.sh
-#  scp $SSHOPTS -r mono-glue user@192.168.112.195:~/
-#  ssh $SSHOPTS user@192.168.112.195 bash build-godot.sh
-#  scp $SSHOPTS user@192.168.112.195:~/godot/bin/* godot-ubuntu-64
-#  ssh $SSHOPTS user@192.168.112.195 sudo shutdown -h now || /bin/true
+  mkdir -p godot-ubuntu-64
+  sudo virsh start godot-ubuntu14.04-64 || /bin/true
+
+  while ! tcping -t 1 192.168.112.195 22 &>/dev/null; do
+    sleep 1
+  done
+
+  sleep 30s
+
+  scp $SSHOPTS build-godot-ubuntu-64.sh user@192.168.112.195:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue user@192.168.112.195:~/
+  ssh $SSHOPTS user@192.168.112.195 bash build-godot.sh
+  scp $SSHOPTS user@192.168.112.195:~/godot/bin/* godot-ubuntu-64
+  ssh $SSHOPTS user@192.168.112.195 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm linux_x11_64*
 
   cp godot-ubuntu-64/godot.x11.opt.debug.64 templates/linux_x11_64_debug
   cp godot-ubuntu-64/godot.x11.opt.64 templates/linux_x11_64_release
+
+  mkdir -p release-${GODOT_VERSION}
+  rm -f release-${GODOT_VERSION}/*linux*64*
+
+  cp godot-ubuntu-64/godot_server.server.opt.64 Godot_v${GODOT_VERSION}_linux_server.64
+  zip -q -9 Godot_v${GODOT_VERSION}_linux_server.64.zip Godot_v${GODOT_VERSION}_linux_server.64
+  mv Godot_v${GODOT_VERSION}_linux_server.64.zip release-${GODOT_VERSION}
+  rm Godot_v${GODOT_VERSION}_linux_server.64
+
+  cp godot-ubuntu-64/godot.x11.opt.64 Godot_v${GODOT_VERSION}_x11.64
+  zip -q -9 Godot_v${GODOT_VERSION}_x11.64.zip Godot_v${GODOT_VERSION}_x11.64
+  mv Godot_v${GODOT_VERSION}_x11.64.zip release-${GODOT_VERSION}
+  rm Godot_v${GODOT_VERSION}_x11.64
 } 
 
 function windows {
   echo "booting windows "
   mkdir -p godot-windows
-  #sudo virsh start win10 || /bin/true
-#
-#  while ! tcping -t 1 192.168.112.158 22 &>/dev/null; do
-#    sleep 1
-#  done
-#
-#  sleep 30s
-#
-#  scp $SSHOPTS checkout-godot-windows.sh build-godot-windows.bat hp@192.168.112.158:
-#  scp $SSHOPTS -r mono-glue hp@192.168.112.158:
-#
-#  ssh $SSHOPTS hp@192.168.112.158 build-godot-windows.bat
-#  scp $SSHOPTS -r hp@192.168.112.158:binaries/* godot-windows
-#  ssh $SSHOPTS hp@192.168.112.158 "shutdown /s /t 0" || /bin/true
+  sudo virsh start win10 || /bin/true
+
+  while ! tcping -t 1 192.168.112.158 22 &>/dev/null; do
+    sleep 1
+  done
+
+  sleep 30s
+
+  scp $SSHOPTS checkout-godot-windows.sh build-godot-windows.bat hp@192.168.112.158:
+  scp $SSHOPTS -r mono-glue hp@192.168.112.158:
+
+  ssh $SSHOPTS hp@192.168.112.158 build-godot-windows.bat
+  scp $SSHOPTS -r hp@192.168.112.158:binaries/* godot-windows
+  ssh $SSHOPTS hp@192.168.112.158 "shutdown /s /t 0" || /bin/true
 
   mkdir -p templates 
   rm -f templates/uwp*
@@ -152,19 +173,19 @@ function windows {
 function macos {
   echo "booting macosx"
   mkdir -p godot-macosx
-#  sudo bash /media/disk2/hp/macosx/OSX-KVM/godot.sh || /bin/true
-#
-#  while ! tcping -t 1 192.168.112.137 22 &>/dev/null; do
-#    sleep 1
-#  done
-# 
-#  sleep 30s
-#  
-#  scp $SSHOPTS build-godot-macosx.sh hp@192.168.112.137:~/build-godot.sh
-#  scp $SSHOPTS -r mono-glue hp@192.168.112.137:~/
-#  ssh $SSHOPTS hp@192.168.112.137 bash build-godot.sh
-#  scp $SSHOPTS hp@192.168.112.137:~/godot/bin/* godot-macosx
-#  ssh $SSHOPTS hp@192.168.112.137 sudo shutdown -h now || /bin/true
+  sudo bash /media/disk2/hp/macosx/OSX-KVM/godot.sh || /bin/true
+
+  while ! tcping -t 1 192.168.112.137 22 &>/dev/null; do
+    sleep 1
+  done
+ 
+  sleep 30s
+  
+  scp $SSHOPTS build-godot-macosx.sh hp@192.168.112.137:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue hp@192.168.112.137:~/
+  ssh $SSHOPTS hp@192.168.112.137 bash build-godot.sh
+  scp $SSHOPTS hp@192.168.112.137:~/godot/bin/* godot-macosx
+  ssh $SSHOPTS hp@192.168.112.137 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm -f templates/osx*
@@ -194,6 +215,16 @@ function macos {
   zip -q -9 -r ../templates/iphone.zip *
   cd ..
   rm -rf ios_xcode
+
+  mkdir -p release-${GODOT_VERSION}
+  rm -f release-${GODOT_VERSION}/*osx*
+
+  cp -r godot-mono-glue/misc/dist/osx_tools.app Godot.app
+  mkdir -p Godot.app/Contents/MacOS
+  cp godot-macosx/godot.osx.opt.tools.fat Godot.app/Contents/MacOS/Godot
+  chmod +x Godot.app/Contents/MacOS/Godot
+  zip -q -9 -r "release-${GODOT_VERSION}/Godot_v${GODOT_VERSION}_osx.fat.zip" Godot.app
+  rm -rf Godot.app
 }
 
 function android {
@@ -201,27 +232,27 @@ function android {
   export ANDROID_NDK_ROOT=/home/hp/Apps/android/android-ndk-r16b
   export SCONS="/usr/bin/scons -j8 verbose=no warnings=no progress=no"
   export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
-#
-#  rm -rf godot-android
-#  git clone https://github.com/godotengine/godot.git godot-android
-#
-#  cd godot-android
-#  git checkout -b 3.0 origin/3.0 || git checkout 3.0
-#  git branch --set-upstream-to=origin/3.0 3.0
-#  git reset --hard
-#  git pull
-#
-#  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=armv7
-#  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=arm64v8
-#  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=x86
-#
-#  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=armv7
-#  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=arm64v8
-#  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=x86
-#
-#  cd platform/android/java
-#  ./gradlew build
-#  cd ../../../
+
+  rm -rf godot-android
+  git clone https://github.com/godotengine/godot.git godot-android
+
+  cd godot-android
+  git checkout -b 3.0 origin/3.0 || git checkout 3.0
+  git branch --set-upstream-to=origin/3.0 3.0
+  git reset --hard
+  git pull
+
+  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=armv7
+  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=arm64v8
+  $SCONS platform=android target=release_debug tools=no ${OPTIONS} android_arch=x86
+
+  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=armv7
+  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=arm64v8
+  $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=x86
+
+  cd platform/android/java
+  ./gradlew build
+  cd ../../../
 
   mkdir -p templates
   rm -f templates/android*
@@ -231,22 +262,22 @@ function android {
 }
 
 function javascript {
-#  export EMSCRIPTEN_ROOT="/home/hp/Apps/emsdk-portable/emscripten/1.37.34"
-#  export SCONS="/usr/bin/scons -j8 verbose=no warnings=no progress=no"
-#  export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
-#
-#  rm -rf godot-javascript
-#  git clone https://github.com/godotengine/godot.git godot-javascript
-#
-#  cd godot-javascript
-#  git checkout -b 3.0 origin/3.0 || git checkout 3.0
-#  git branch --set-upstream-to=origin/3.0 3.0
-#  git reset --hard
-#  git pull
-#
-#  $SCONS platform=javascript target=release_debug tools=no ${OPTIONS}
-#  $SCONS platform=javascript target=release tools=no ${OPTIONS}
-#  cd ..
+  export EMSCRIPTEN_ROOT="/home/hp/Apps/emsdk-portable/emscripten/1.37.34"
+  export SCONS="/usr/bin/scons -j8 verbose=no warnings=no progress=no"
+  export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
+
+  rm -rf godot-javascript
+  git clone https://github.com/godotengine/godot.git godot-javascript
+
+  cd godot-javascript
+  git checkout -b 3.0 origin/3.0 || git checkout 3.0
+  git branch --set-upstream-to=origin/3.0 3.0
+  git reset --hard
+  git pull
+
+  $SCONS platform=javascript target=release_debug tools=no ${OPTIONS}
+  $SCONS platform=javascript target=release tools=no ${OPTIONS}
+  cd ..
 
   mkdir -p templates
   rm -f templates/webassembly*
