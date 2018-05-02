@@ -3,7 +3,7 @@ set -e
 
 export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
 export SSHOPTS="-i /home/hp/.ssh/id_rsa "
-export GODOT_VERSION=$2
+export GODOT_VERSION=$1
 
 function mono-glue {
   rm -rf godot-mono-glue
@@ -42,7 +42,7 @@ function ubuntu_32 {
   ssh $SSHOPTS user@192.168.112.183 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
-  rm linux_x11_32*
+  rm -f templates/linux_x11_32*
 
   cp godot-ubuntu-32/godot.x11.opt.debug.32 templates/linux_x11_32_debug
   cp godot-ubuntu-32/godot.x11.opt.32 templates/linux_x11_32_release
@@ -54,6 +54,22 @@ function ubuntu_32 {
   zip -q -9 Godot_v${GODOT_VERSION}_x11.32.zip Godot_v${GODOT_VERSION}_x11.32
   mv Godot_v${GODOT_VERSION}_x11.32.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_x11.32
+
+  mkdir -p mono/release-${GODOT_VERSION}
+  rm -f mono/release-${GODOT_VERSION}/*linux*32*
+
+  mkdir -p Godot_v${GODOT_VERSION}_mono_x11_32
+  cp godot-ubuntu-32/godot.x11.opt.32.mono Godot_v${GODOT_VERSION}_mono_x11_32/Godot_v${GODOT_VERSION}_mono_x11.32
+  cp godot-ubuntu-32/*.dll Godot_v${GODOT_VERSION}_mono_x11_32
+  zip -r -q -9 Godot_v${GODOT_VERSION}_mono_x11_32.zip Godot_v${GODOT_VERSION}_mono_x11_32
+  mv Godot_v${GODOT_VERSION}_mono_x11_32.zip mono/release-${GODOT_VERSION}
+  rm -rf Godot_v${GODOT_VERSION}_mono_x11_32
+
+  mkdir -p mono/templates
+  rm -f mono/templates/*linux*32*
+
+  cp godot-ubuntu-32/godot.x11.opt.debug.32.mono templates/linux_x11_32_debug
+  cp godot-ubuntu-32/godot.x11.opt.32.mono templates/linux_x11_32_release
 }
 
 function ubuntu_64 {
@@ -74,7 +90,7 @@ function ubuntu_64 {
   ssh $SSHOPTS user@192.168.112.195 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
-  rm linux_x11_64*
+  rm templates/linux_x11_64*
 
   cp godot-ubuntu-64/godot.x11.opt.debug.64 templates/linux_x11_64_debug
   cp godot-ubuntu-64/godot.x11.opt.64 templates/linux_x11_64_release
@@ -91,6 +107,23 @@ function ubuntu_64 {
   zip -q -9 Godot_v${GODOT_VERSION}_x11.64.zip Godot_v${GODOT_VERSION}_x11.64
   mv Godot_v${GODOT_VERSION}_x11.64.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_x11.64
+
+  mkdir -p mono/release-${GODOT_VERSION}
+  rm -f mono/release-${GODOT_VERSION}/*linux*64*
+
+  mkdir -p Godot_v${GODOT_VERSION}_mono_x11_64
+  cp godot-ubuntu-64/godot.x11.opt.64.mono Godot_v${GODOT_VERSION}_mono_x11_64/Godot_v${GODOT_VERSION}_mono_x11.64
+  cp godot-ubuntu-64/*.dll Godot_v${GODOT_VERSION}_mono_x11_64
+  zip -r -q -9 Godot_v${GODOT_VERSION}_mono_x11_64.zip Godot_v${GODOT_VERSION}_mono_x11_64
+  mv Godot_v${GODOT_VERSION}_mono_x11_64.zip mono/release-${GODOT_VERSION}
+  rm -rf Godot_v${GODOT_VERSION}_mono_x11_64
+
+  mkdir -p mono/templates
+  rm -f mono/templates/*linux*64*
+
+  cp godot-ubuntu-64/godot.x11.opt.debug.64.mono templates/linux_x11_64_debug
+  cp godot-ubuntu-64/godot.x11.opt.64.mono templates/linux_x11_64_release
+
 } 
 
 function windows {
@@ -168,6 +201,34 @@ function windows {
   zip -q -9 Godot_v${GODOT_VERSION}_win32.exe.zip Godot_v${GODOT_VERSION}_win32.exe
   mv Godot_v${GODOT_VERSION}_win32.exe.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_win32.exe
+
+  mkdir -p mono/release-${GODOT_VERSION}
+  rm -f mono/release-${GODOT_VERSION}/*win*
+
+  mkdir -p mono/templates
+  rm -f mono/templates/*win*
+
+  # Win32
+  mkdir -p Godot_v${GODOT_VERSION}_mono_win32
+  cp godot-windows/win_x86/godot.windows.opt.tools.32.mono.exe Godot_v${GODOT_VERSION}_mono_win32/Godot_v${GODOT_VERSION}_mono_win32.exe
+  cp godot-windows/win_x86/*.dll Godot_v${GODOT_VERSION}_mono_win32
+  zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win32.zip Godot_v${GODOT_VERSION}_mono_win32
+  mv Godot_v${GODOT_VERSION}_mono_win32.zip mono/release-${GODOT_VERSION}
+  rm -rf Godot_v${GODOT_VERSION}_mono_win32
+
+  cp godot-windows/win_x86/godot.windows.opt.debug.32.mono.exe mono/templates/windows_32_debug.exe
+  cp godot-windows/win_x86/godot.windows.opt.32.mono.exe mono/templates/windows_32_release.exe
+
+  # x64
+  mkdir -p Godot_v${GODOT_VERSION}_mono_win64
+  cp godot-windows/win_amd64/godot.windows.opt.tools.64.mono.exe Godot_v${GODOT_VERSION}_mono_win64/Godot_v${GODOT_VERSION}_mono_win64.exe
+  cp godot-windows/win_amd64/*.dll Godot_v${GODOT_VERSION}_mono_win64
+  zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win64.zip Godot_v${GODOT_VERSION}_mono_win64
+  mv Godot_v${GODOT_VERSION}_mono_win64.zip mono/release-${GODOT_VERSION}
+  rm -rf Godot_v${GODOT_VERSION}_mono_win64
+
+  cp godot-windows/win_amd64/godot.windows.opt.debug.64.mono.exe mono/templates/windows_64_debug.exe
+  cp godot-windows/win_amd64/godot.windows.opt.64.mono.exe mono/templates/windows_64_release.exe
 } 
 
 function macos {
@@ -225,6 +286,36 @@ function macos {
   chmod +x Godot.app/Contents/MacOS/Godot
   zip -q -9 -r "release-${GODOT_VERSION}/Godot_v${GODOT_VERSION}_osx.fat.zip" Godot.app
   rm -rf Godot.app
+
+  mkdir -p mono/templates
+  rm -f mono/templates/osx*
+
+  rm -rf osx_template
+  mkdir -p osx_template
+  cd osx_template
+
+  cp -r ../godot-mono-glue/misc/dist/osx_template.app .
+  mkdir osx_template.app/Contents/MacOS
+
+  cp ../godot-macosx/godot.osx.opt.fat.mono osx_template.app/Contents/MacOS/godot_osx_release.fat
+  cp ../godot-macosx/godot.osx.opt.debug.fat.mono osx_template.app/Contents/MacOS/godot_osx_debug.fat
+  chmod +x osx_template.app/Contents/MacOS/godot_osx*
+  zip -q -9 -r osx.zip osx_template.app
+  cd ..
+
+  mv osx_template/osx.zip mono/templates
+  rm -rf osx_template
+
+  mkdir -p mono/release-${GODOT_VERSION}
+  rm -f mono/release-${GODOT_VERSION}/*osx*
+
+  cp -r godot-mono-glue/misc/dist/osx_tools.app Godot_mono.app
+  mkdir -p Godot_mono.app/Contents/MacOS
+  cp godot-macosx/godot.osx.opt.tools.fat.mono Godot_mono.app/Contents/MacOS/Godot
+  cp godot-macosx/*.dll Godot_mono.app/Contents/MacOS/
+  chmod +x Godot_mono.app/Contents/MacOS/Godot
+  zip -q -9 -r "mono/release-${GODOT_VERSION}/Godot_v${GODOT_VERSION}_mono_osx.fat.zip" Godot_mono.app
+  rm -rf Godot_mono.app
 }
 
 function android {
@@ -286,5 +377,4 @@ function javascript {
   cp godot-javascript/bin/godot.javascript.opt.debug.zip templates/webassembly_debug.zip
 }
 
-
-$1
+$2
