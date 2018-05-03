@@ -50,7 +50,7 @@ function ubuntu_32 {
   mkdir -p release-${GODOT_VERSION}
   rm -f release-${GODOT_VERSION}/*linux*32*
 
-  cp godot-ubuntu-32/godot.x11.opt.32 Godot_v${GODOT_VERSION}_x11.32
+  cp godot-ubuntu-32/godot.x11.opt.tools.32 Godot_v${GODOT_VERSION}_x11.32
   zip -q -9 Godot_v${GODOT_VERSION}_x11.32.zip Godot_v${GODOT_VERSION}_x11.32
   mv Godot_v${GODOT_VERSION}_x11.32.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_x11.32
@@ -59,7 +59,7 @@ function ubuntu_32 {
   rm -f mono/release-${GODOT_VERSION}/*linux*32*
 
   mkdir -p Godot_v${GODOT_VERSION}_mono_x11_32
-  cp godot-ubuntu-32/godot.x11.opt.32.mono Godot_v${GODOT_VERSION}_mono_x11_32/Godot_v${GODOT_VERSION}_mono_x11.32
+  cp godot-ubuntu-32/godot.x11.opt.tools.32.mono Godot_v${GODOT_VERSION}_mono_x11_32/Godot_v${GODOT_VERSION}_mono_x11.32
   cp godot-ubuntu-32/*.dll Godot_v${GODOT_VERSION}_mono_x11_32
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_x11_32.zip Godot_v${GODOT_VERSION}_mono_x11_32
   mv Godot_v${GODOT_VERSION}_mono_x11_32.zip mono/release-${GODOT_VERSION}
@@ -103,7 +103,7 @@ function ubuntu_64 {
   mv Godot_v${GODOT_VERSION}_linux_server.64.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_linux_server.64
 
-  cp godot-ubuntu-64/godot.x11.opt.64 Godot_v${GODOT_VERSION}_x11.64
+  cp godot-ubuntu-64/godot.x11.opt.tools.64 Godot_v${GODOT_VERSION}_x11.64
   zip -q -9 Godot_v${GODOT_VERSION}_x11.64.zip Godot_v${GODOT_VERSION}_x11.64
   mv Godot_v${GODOT_VERSION}_x11.64.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_x11.64
@@ -112,7 +112,7 @@ function ubuntu_64 {
   rm -f mono/release-${GODOT_VERSION}/*linux*64*
 
   mkdir -p Godot_v${GODOT_VERSION}_mono_x11_64
-  cp godot-ubuntu-64/godot.x11.opt.64.mono Godot_v${GODOT_VERSION}_mono_x11_64/Godot_v${GODOT_VERSION}_mono_x11.64
+  cp godot-ubuntu-64/godot.x11.opt.tools.64.mono Godot_v${GODOT_VERSION}_mono_x11_64/Godot_v${GODOT_VERSION}_mono_x11.64
   cp godot-ubuntu-64/*.dll Godot_v${GODOT_VERSION}_mono_x11_64
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_x11_64.zip Godot_v${GODOT_VERSION}_mono_x11_64
   mv Godot_v${GODOT_VERSION}_mono_x11_64.zip mono/release-${GODOT_VERSION}
