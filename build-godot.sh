@@ -340,9 +340,9 @@ function android {
   $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=arm64v8
   $SCONS platform=android target=release tools=no ${OPTIONS} android_arch=x86
 
-  cd platform/android/java
+  pushd platform/android/java
   ./gradlew build
-  cd ../../../
+  popd
 
   mkdir -p templates
   rm -f templates/android*
