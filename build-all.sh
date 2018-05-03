@@ -15,7 +15,7 @@ fi
 VERSION=$1
 FILE_VERSION=$2
 
-./build-godot.sh mono-glue
+./build-godot.sh ${FILE_VERSION} mono-glue
 echo "windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P 2 -n 1 ./build-godot.sh ${FILE_VERSION}
 
 echo "$VERSION" > templates/version.txt
