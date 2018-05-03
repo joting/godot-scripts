@@ -90,7 +90,7 @@ function ubuntu_64 {
   ssh $SSHOPTS user@192.168.112.195 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
-  rm templates/linux_x11_64*
+  rm -f templates/linux_x11_64*
 
   cp godot-ubuntu-64/godot.x11.opt.debug.64 templates/linux_x11_64_debug
   cp godot-ubuntu-64/godot.x11.opt.64 templates/linux_x11_64_release
