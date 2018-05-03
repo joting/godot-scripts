@@ -21,7 +21,7 @@ function mono-glue {
   cd ..
   rm -rf mono-glue
   mkdir mono-glue
-  cp godot-mono-glue/modules/mono/glue/cs_compressed.gen.h godot/modules/mono/glue/mono_glue.gen.cpp mono-glue
+  cp godot-mono-glue/modules/mono/glue/cs_compressed.gen.h godot-mono-glue/modules/mono/glue/mono_glue.gen.cpp mono-glue
 }
 
 function ubuntu_32 {

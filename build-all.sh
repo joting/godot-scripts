@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z "$1" ]; then
   echo "usage: $0 <version> <file version>"
   echo "  like : $0 3.0.3.rc1 3.0.3-rc1"
