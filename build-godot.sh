@@ -344,6 +344,8 @@ function android {
   ./gradlew build
   popd
 
+  cd ..
+
   mkdir -p templates
   rm -f templates/android*
 
