@@ -5,6 +5,31 @@ export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative
 export SSHOPTS="-i /home/hp/.ssh/id_rsa "
 export GODOT_VERSION=$1
 
+function get-domain-ip {
+  domain=$1
+  mac=$(sudo virsh domiflist ${domain} | tail -n-2 | awk '{print $5}')
+  ip=$(sudo virsh net-dhcp-leases default-nat | grep $mac | awk '{print $5}' | cut -d/ -f1)
+
+  echo $ip
+}
+
+function boot-domain {
+  domain=$1
+  echo "${domain} "
+
+  if sudo virsh start godot-win7; then
+    sleep 30s
+  fi
+
+  ip=$(get-domain-ip godot-win7)
+
+  while ! tcping -t 1 ${ip} 22 &>/dev/null; do
+    sleep 1
+  done
+
+  echo ${ip}
+}
+
 function mono-glue {
   rm -rf godot-mono-glue
   git clone https://github.com/godotengine/godot.git godot-mono-glue
@@ -25,21 +50,14 @@ function mono-glue {
 }
 
 function ubuntu_32 {
-  echo "booting ubuntu 32 "
   mkdir -p godot-ubuntu-32
-  sudo virsh start godot-ubuntu14.04-32 || /bin/true
+  ip=$(boot-domain godot-ubuntu14.04-32)
 
-  while ! tcping -t 1 192.168.112.183 22 :>/dev/null; do
-    sleep 1
-  done
-
-  sleep 30s
-
-  scp $SSHOPTS build-godot-ubuntu-32.sh user@192.168.112.183:~/build-godot.sh
-  scp $SSHOPTS -r mono-glue user@192.168.112.183:~/
-  ssh $SSHOPTS user@192.168.112.183 bash build-godot.sh
-  scp $SSHOPTS user@192.168.112.183:~/godot/bin/* godot-ubuntu-32
-  ssh $SSHOPTS user@192.168.112.183 sudo shutdown -h now || /bin/true
+  scp $SSHOPTS build-godot-ubuntu-32.sh user@${ip}:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue user@${ip}:~/
+  ssh $SSHOPTS user@${ip} bash build-godot.sh
+  scp $SSHOPTS user@${ip}:~/godot/bin/* godot-ubuntu-32
+  ssh $SSHOPTS user@${ip} sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm -f templates/linux_x11_32*
@@ -73,21 +91,14 @@ function ubuntu_32 {
 }
 
 function ubuntu_64 {
-  echo "booting ubuntu 64 "
   mkdir -p godot-ubuntu-64
-  sudo virsh start godot-ubuntu14.04-64 || /bin/true
+  ip=$(boot-domain godot-ubuntu14.04-64)
 
-  while ! tcping -t 1 192.168.112.195 22 &>/dev/null; do
-    sleep 1
-  done
-
-  sleep 30s
-
-  scp $SSHOPTS build-godot-ubuntu-64.sh user@192.168.112.195:~/build-godot.sh
-  scp $SSHOPTS -r mono-glue user@192.168.112.195:~/
-  ssh $SSHOPTS user@192.168.112.195 bash build-godot.sh
-  scp $SSHOPTS user@192.168.112.195:~/godot/bin/* godot-ubuntu-64
-  ssh $SSHOPTS user@192.168.112.195 sudo shutdown -h now || /bin/true
+  scp $SSHOPTS build-godot-ubuntu-64.sh user@${ip}:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue user@${ip}:~/
+  ssh $SSHOPTS user@${ip} bash build-godot.sh
+  scp $SSHOPTS user@${ip}:~/godot/bin/* godot-ubuntu-64
+  ssh $SSHOPTS user@${ip} sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm -f templates/linux_x11_64*
@@ -126,22 +137,15 @@ function ubuntu_64 {
 } 
 
 function windows {
-  echo "booting windows "
+  ip=$(boot-domain godot-windows)
   mkdir -p godot-windows
-  sudo virsh start godot-win7 || /bin/true
 
-  while ! tcping -t 1 192.168.112.172 22 &>/dev/null; do
-    sleep 1
-  done
+  scp $SSHOPTS build-godot-windows.bat user@${ip}:
+  scp $SSHOPTS -r mono-glue user@${ip}:
 
-  sleep 30s
-
-  scp $SSHOPTS build-godot-windows.bat user@192.168.112.172:
-  scp $SSHOPTS -r mono-glue user@192.168.112.172:
-
-  ssh $SSHOPTS user@192.168.112.172 build-godot-windows.bat
-  scp $SSHOPTS -r user@192.168.112.172:binaries/* godot-windows
-  ssh $SSHOPTS user@192.168.112.172 "shutdown /s /t 0" || /bin/true
+  ssh $SSHOPTS user@${ip} build-godot-windows.bat
+  scp $SSHOPTS -r user@${ip}:binaries/* godot-windows
+  ssh $SSHOPTS user@${ip} "shutdown /s /t 0" || /bin/true
 
   mkdir -p templates 
   rm -f templates/uwp*
