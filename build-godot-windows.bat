@@ -1,8 +1,21 @@
-"C:\Program Files\Git\bin\bash.exe" checkout-godot-windows.sh
+set PATH=C:\Python36\Scripts\;C:\Python36\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\ v1.0\;C:\ProgramData\chocolatey\bin;C:\Program Files\OpenSSH-Win64;C:\Program Files\Git\cmd;
+rmdir /s /q godot
+git clone https://github.com/godotengine/godot.git
+
+cd godot
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+git checkout -b 3.0 origin/3.0 || git checkout 3.0
+git branch --set-upstream-to=origin/3.0 3.0
+git reset --hard
+git pull
+
+cd ..
+
 set BUILD_NAME=official
 set MONO32_PREFIX=C:\Program Files (x86)/Mono
 set MONO64_PREFIX=C:\Program Files\Mono
-set SCONS=python ../scons/scons.py -j8 verbose=no warnings=no progress=no
+set SCONS=call scons -j8 verbose=no warnings=no progress=no
 set OPTIONS=builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no
 set TERM=xterm 
 
@@ -13,14 +26,14 @@ cd godot
 copy ..\mono-glue\*.* modules\mono\glue
 
 del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 8.1
 %SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
 
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes mono_static=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes mono_static=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes mono_static=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes use_lto=yes
 
 md ..\binaries\win_amd64
 copy bin\*.* ..\binaries\win_amd64
@@ -31,9 +44,9 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliar
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
 
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes mono_static=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes mono_static=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes mono_static=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes use_lto=yes
 
 md ..\binaries\win_x86
 copy bin\*.* ..\binaries\win_x86

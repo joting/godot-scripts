@@ -128,20 +128,20 @@ function ubuntu_64 {
 function windows {
   echo "booting windows "
   mkdir -p godot-windows
-  sudo virsh start win10 || /bin/true
+  sudo virsh start godot-win7 || /bin/true
 
-  while ! tcping -t 1 192.168.112.158 22 &>/dev/null; do
+  while ! tcping -t 1 192.168.112.172 22 &>/dev/null; do
     sleep 1
   done
 
   sleep 30s
 
-  scp $SSHOPTS checkout-godot-windows.sh build-godot-windows.bat hp@192.168.112.158:
-  scp $SSHOPTS -r mono-glue hp@192.168.112.158:
+  scp $SSHOPTS build-godot-windows.bat user@192.168.112.172:
+  scp $SSHOPTS -r mono-glue user@192.168.112.172:
 
-  ssh $SSHOPTS hp@192.168.112.158 build-godot-windows.bat
-  scp $SSHOPTS -r hp@192.168.112.158:binaries/* godot-windows
-  ssh $SSHOPTS hp@192.168.112.158 "shutdown /s /t 0" || /bin/true
+  ssh $SSHOPTS user@192.168.112.172 build-godot-windows.bat
+  scp $SSHOPTS -r user@192.168.112.172:binaries/* godot-windows
+  ssh $SSHOPTS user@192.168.112.172 "shutdown /s /t 0" || /bin/true
 
   mkdir -p templates 
   rm -f templates/uwp*
