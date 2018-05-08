@@ -2,7 +2,7 @@
 set -e
 
 export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
-export SSHOPTS="-i /home/hp/.ssh/id_rsa "
+export SSHOPTS="-i /home/hp/.ssh/id_rsa -oStrictHostKeyChecking=no "
 export GODOT_VERSION=$1
 
 function get-domain-ip {
