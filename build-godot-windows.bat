@@ -40,9 +40,9 @@ rd /s /q binaries
 md binaries
 cd godot
 
+git clean -fx
 copy ..\mono-glue\*.* modules\mono\glue
 
-git clean -fx
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 10.0.16299.0
 %SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
@@ -56,6 +56,8 @@ md ..\binaries\win_amd64
 copy bin\*.* ..\binaries\win_amd64
 
 git clean -fx
+copy ..\mono-glue\*.* modules\mono\glue
+
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 10.0.16299.0
 %SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
