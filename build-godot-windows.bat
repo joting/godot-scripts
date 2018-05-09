@@ -1,5 +1,8 @@
 set PATH=C:\Python36\Scripts\;C:\Python36\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\ v1.0\;C:\ProgramData\chocolatey\bin;C:\Program Files\OpenSSH-Win64;C:\Program Files\Git\cmd;
 
+choco list --local-only | findstr mono
+IF %ERRORLEVEL% EQU 0 GOTO BUILD
+
 net user Administrator /active:yes
 choco install -y visualstudio2017buildtools visualstudio2017-workload-vctools visualstudio2017-workload-universal windows-sdk-8.1 mono git python curl 7zip 
 choco install -y --force mono --x86
@@ -7,6 +10,8 @@ python -m pip install --upgrade pip
 pip install -U setuptools
 pip install -U wheel
 pip install scons pywin32
+
+:BUILD
 
 rmdir /s /q godot
 git clone https://github.com/godotengine/godot.git
@@ -63,7 +68,7 @@ copy bin\*.* ..\binaries\win_x86
 cd ..
 
 curl -O -L https://github.com/GodotBuilder/godot-builds/releases/download/_tools/angle.7z
-"c:\Program Files\7-Zip\7z.exe" x -aoa angle.7z
+7z x -aoa angle.7z
 set ANGLE_SRC_PATH=%cd%\angle
 
 cd godot

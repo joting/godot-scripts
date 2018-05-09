@@ -17,17 +17,15 @@ function boot-domain {
   domain=$1
   echo "${domain} "
 
-  if sudo virsh start godot-win7; then
+  if sudo virsh start ${domain}; then
     sleep 30s
   fi
 
-  ip=$(get-domain-ip godot-win7)
+  ip=$(get-domain-ip ${domain})
 
   while ! tcping -t 1 ${ip} 22 &>/dev/null; do
     sleep 1
   done
-
-  echo ${ip}
 }
 
 function mono-glue {
@@ -51,7 +49,7 @@ function mono-glue {
 
 function ubuntu_32 {
   mkdir -p godot-ubuntu-32
-  ip=$(boot-domain godot-ubuntu14.04-32)
+  boot-domain godot-ubuntu14.04-32
 
   scp $SSHOPTS build-godot-ubuntu-32.sh user@${ip}:~/build-godot.sh
   scp $SSHOPTS -r mono-glue user@${ip}:~/
@@ -92,7 +90,7 @@ function ubuntu_32 {
 
 function ubuntu_64 {
   mkdir -p godot-ubuntu-64
-  ip=$(boot-domain godot-ubuntu14.04-64)
+  boot-domain godot-ubuntu14.04-64
 
   scp $SSHOPTS build-godot-ubuntu-64.sh user@${ip}:~/build-godot.sh
   scp $SSHOPTS -r mono-glue user@${ip}:~/
@@ -137,7 +135,7 @@ function ubuntu_64 {
 } 
 
 function windows {
-  ip=$(boot-domain godot-windows)
+  boot-domain godot-win10
   mkdir -p godot-windows
 
   scp $SSHOPTS build-godot-windows.bat user@${ip}:
