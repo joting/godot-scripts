@@ -141,8 +141,8 @@ function windows {
   scp $SSHOPTS build-godot-windows.bat user@${ip}:
   scp $SSHOPTS -r mono-glue user@${ip}:
 
-  ssh $SSHOPTS user@${ip} build-godot-windows.bat
-  scp $SSHOPTS -r user@${ip}:binaries/* godot-windows
+  ssh $SSHOPTS user@${ip} build-godot-windows.bat 2>&1 | tee build-godot-windows.log
+  scp $SSHOPTS -r user@${ip}:binaries/* godot-windows 
   ssh $SSHOPTS user@${ip} "shutdown /s /t 0" || /bin/true
 
   mkdir -p templates 

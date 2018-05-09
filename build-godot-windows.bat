@@ -4,13 +4,15 @@ choco list --local-only | findstr mono
 IF %ERRORLEVEL% EQU 0 GOTO BUILD
 
 net user Administrator /active:yes
-choco install -y visualstudio2017buildtools visualstudio2017-workload-vctools visualstudio2017-workload-universal windows-sdk-8.1 git python curl 7zip 
+choco install -y git python curl 7zip 
+choco install -y visualstudio2017buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.UniversalBuildTools --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.Windows10SDK.16299.Desktop --add Microsoft.VisualStudio.Component.Windows10SDK.16299.UWP.Native --passive"
 choco install -y mono --version 5.10.1.47
 choco install -y --force mono --x86 --version 5.10.1.47
 python -m pip install --upgrade pip
 pip install -U setuptools
 pip install -U wheel
 pip install scons pywin32
+net user Administrator /active:no
 
 :BUILD
 
@@ -40,8 +42,8 @@ cd godot
 
 copy ..\mono-glue\*.* modules\mono\glue
 
-del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 8.1
+git clean -fx
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 10.0.16299.0
 %SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
@@ -53,8 +55,8 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliar
 md ..\binaries\win_amd64
 copy bin\*.* ..\binaries\win_amd64
 
-del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 8.1
+git clean -fx
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 10.0.16299.0
 %SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
 %SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
@@ -74,24 +76,24 @@ set ANGLE_SRC_PATH=%cd%\angle
 
 cd godot
 
-del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 uwp
+git clean -fx
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
 
 md ..\binaries\uwp_amd64
 copy bin\*.* ..\binaries\uwp_amd64
 
-del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 uwp
+git clean -fx
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
 
 md ..\binaries\uwp_x86
 copy bin\*.* ..\binaries\uwp_x86
 
-del /F /Q bin\*.*
-call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_arm uwp
+git clean -fx
+call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_arm uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
 
