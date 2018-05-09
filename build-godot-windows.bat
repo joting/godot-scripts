@@ -4,8 +4,9 @@ choco list --local-only | findstr mono
 IF %ERRORLEVEL% EQU 0 GOTO BUILD
 
 net user Administrator /active:yes
-choco install -y visualstudio2017buildtools visualstudio2017-workload-vctools visualstudio2017-workload-universal windows-sdk-8.1 mono git python curl 7zip 
-choco install -y --force mono --x86
+choco install -y visualstudio2017buildtools visualstudio2017-workload-vctools visualstudio2017-workload-universal windows-sdk-8.1 git python curl 7zip 
+choco install -y mono --version 5.10.1.47
+choco install -y --force mono --x86 --version 5.10.1.47
 python -m pip install --upgrade pip
 pip install -U setuptools
 pip install -U wheel
