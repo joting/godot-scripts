@@ -26,7 +26,6 @@ git checkout -b 3.0 origin/3.0 || git checkout 3.0
 git branch --set-upstream-to=origin/3.0 3.0
 git reset --hard
 git pull
-
 cd ..
 
 set BUILD_NAME=official
@@ -41,6 +40,7 @@ md binaries
 cd godot
 
 git clean -fx
+rmdir /s /q bin
 copy ..\mono-glue\*.* modules\mono\glue
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 10.0.16299.0
@@ -56,6 +56,7 @@ md ..\binaries\win_amd64
 copy bin\*.* ..\binaries\win_amd64
 
 git clean -fx
+rmdir /s /q bin
 copy ..\mono-glue\*.* modules\mono\glue
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 10.0.16299.0
@@ -79,6 +80,8 @@ set ANGLE_SRC_PATH=%cd%\angle
 cd godot
 
 git clean -fx
+rmdir /s /q bin
+
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
@@ -87,6 +90,8 @@ md ..\binaries\uwp_amd64
 copy bin\*.* ..\binaries\uwp_amd64
 
 git clean -fx
+rmdir /s /q bin
+
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
@@ -95,6 +100,8 @@ md ..\binaries\uwp_x86
 copy bin\*.* ..\binaries\uwp_x86
 
 git clean -fx
+rmdir /s /q bin
+
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_arm uwp 10.0.16299.0
 %SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
 %SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes

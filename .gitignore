@@ -11,3 +11,4 @@ release-*
 templates
 
 *.swp
+*.log
