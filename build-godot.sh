@@ -141,7 +141,7 @@ function windows {
   scp $SSHOPTS build-godot-windows.bat user@${ip}:
   scp $SSHOPTS -r mono-glue user@${ip}:
 
-  ssh $SSHOPTS user@${ip} build-godot-windows.bat 2>&1 | tee build-godot-windows.log
+  ssh $SSHOPTS user@${ip} build-godot-windows.bat
   scp $SSHOPTS -r user@${ip}:binaries/* godot-windows 
   ssh $SSHOPTS user@${ip} "shutdown /s /t 0" || /bin/true
 
@@ -380,4 +380,4 @@ function javascript {
   cp godot-javascript/bin/godot.javascript.opt.debug.zip templates/webassembly_debug.zip
 }
 
-$2
+$2 2>&1 | tee build-godot-$2.log
