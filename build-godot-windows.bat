@@ -44,13 +44,13 @@ rmdir /s /q bin
 copy ..\mono-glue\*.* modules\mono\glue
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 10.0.16299.0
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug 
+%SCONS% platform=windows %OPTIONS% tools=no target=release 
 
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes
 
 md ..\binaries\win_amd64
 copy bin\*.* ..\binaries\win_amd64
@@ -60,13 +60,13 @@ rmdir /s /q bin
 copy ..\mono-glue\*.* modules\mono\glue
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 10.0.16299.0
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug  use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release  use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug 
+%SCONS% platform=windows %OPTIONS% tools=no target=release 
 
-%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes use_lto=yes
-%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes use_lto=yes
+%SCONS% platform=windows %OPTIONS% tools=yes target=release_debug module_mono_enabled=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release_debug module_mono_enabled=yes
+%SCONS% platform=windows %OPTIONS% tools=no target=release module_mono_enabled=yes
 
 md ..\binaries\win_x86
 copy bin\*.* ..\binaries\win_x86
@@ -83,8 +83,8 @@ git clean -fx
 rmdir /s /q bin
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 uwp 10.0.16299.0
-%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
-%SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
+%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug
+%SCONS% platform=uwp %OPTIONS% tools=no target=release
 
 md ..\binaries\uwp_amd64
 copy bin\*.* ..\binaries\uwp_amd64
@@ -93,8 +93,8 @@ git clean -fx
 rmdir /s /q bin
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_x86 uwp 10.0.16299.0
-%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
-%SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
+%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug
+%SCONS% platform=uwp %OPTIONS% tools=no target=release
 
 md ..\binaries\uwp_x86
 copy bin\*.* ..\binaries\uwp_x86
@@ -103,8 +103,8 @@ git clean -fx
 rmdir /s /q bin
 
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64_arm uwp 10.0.16299.0
-%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug use_lto=yes
-%SCONS% platform=uwp %OPTIONS% tools=no target=release use_lto=yes
+%SCONS% platform=uwp %OPTIONS% tools=no target=release_debug
+%SCONS% platform=uwp %OPTIONS% tools=no target=release
 
 md ..\binaries\uwp_arm
 copy bin\*.* ..\binaries\uwp_arm
