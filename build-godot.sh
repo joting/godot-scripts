@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+if [ -z $1 ] || [ -z $2 ] || [ -z $3 ]; then
+  echo "Usage: $0 <version> <mono version> <platform>"
+  echo "  For example: $0 3.0.3-rc3 5.12.0.226 ubuntu_32"
+  echo ""
+  echo "Platforms: mono-glue, ubuntu_32, ubuntu_64, macos, uwp, windows, javascript, android"
+  exit 1
+fi
+
 export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
 export SSHOPTS="-i /home/hp/.ssh/id_rsa -oStrictHostKeyChecking=no "
 export GODOT_VERSION=$1
@@ -134,14 +142,14 @@ function ubuntu_64 {
   cp godot-ubuntu-64/godot.x11.opt.64.mono mono/templates/linux_x11_64_release
 } 
 
-function windows {
+function uwp {
   boot-domain godot-win10
   mkdir -p godot-windows
 
-  scp $SSHOPTS build-godot-windows.bat user@${ip}:
+  scp $SSHOPTS build-godot-uwp.bat user@${ip}:
   scp $SSHOPTS -r mono-glue user@${ip}:
 
-  ssh $SSHOPTS user@${ip} build-godot-windows.bat
+  ssh $SSHOPTS user@${ip} build-godot-uwp.bat
   scp $SSHOPTS -r user@${ip}:binaries/* godot-windows 
   ssh $SSHOPTS user@${ip} "shutdown /s /t 0" || /bin/true
 
@@ -189,7 +197,9 @@ function windows {
   cp godot-windows/win_amd64/godot.windows.opt.64.exe templates/windows_64_release.exe
 
   rm -rf uwp_template_*
+} 
 
+function windows {
   mkdir -p release-${GODOT_VERSION}
   rm -f release-${GODOT_VERSION}/*win*zip
 
@@ -230,7 +240,7 @@ function windows {
 
   cp godot-windows/win_amd64/godot.windows.opt.debug.64.mono.exe mono/templates/windows_64_debug.exe
   cp godot-windows/win_amd64/godot.windows.opt.64.mono.exe mono/templates/windows_64_release.exe
-} 
+}
 
 function macos {
   echo "booting macosx"
@@ -380,4 +390,4 @@ function javascript {
   cp godot-javascript/bin/godot.javascript.opt.debug.zip templates/webassembly_debug.zip
 }
 
-$2 2>&1 | tee build-godot-$2.log
+$3 2>&1 | tee build-godot-$2.log

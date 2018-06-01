@@ -2,23 +2,18 @@
 
 set -e
 
-if [ -z "$1" ]; then
-  echo "usage: $0 <version> <file version>"
-  echo "  like : $0 3.0.3.rc1 3.0.3-rc1"
-  exit 1
-fi
-
-if [ -z "$2" ]; then
-  echo "usage: $0 <version> <file version>"
-  echo "  like : $0 3.0.3.rc1 3.0.3-rc1"
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+  echo "usage: $0 <version> <file version> <mono version>"
+  echo "  like : $0 3.0.3.rc1 3.0.3-rc1 5.12.0.226"
   exit 1
 fi
 
 VERSION=$1
 FILE_VERSION=$2
+MONO_VERSION=$3
 
 ./build-godot.sh ${FILE_VERSION} mono-glue
-echo "windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P 2 -n 1 ./build-godot.sh ${FILE_VERSION}
+echo "uwp windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P 2 -n 1 ./build-godot.sh ${FILE_VERSION} ${MONO_VERSION}
 
 echo "$VERSION" > templates/version.txt
 

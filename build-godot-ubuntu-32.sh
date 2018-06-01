@@ -2,10 +2,17 @@
 
 set -e
 
+if [ -z $1 ]; then
+  echo "Usage: $0 <mono version"
+  exit 1
+fi
+
+MONO_VERSION=$1
+
 if [ ! -e /etc/apt/sources.list.d/mono-official-stable.list ]; then
   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
   sudo apt-get install -y apt-transport-https
-  echo "deb https://download.mono-project.com/repo/ubuntu trusty/snapshots/5.10.1.47 main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+  echo "deb https://download.mono-project.com/repo/ubuntu trusty/snapshots/${MONO_VERSION} main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
 fi
 
 if [ ! -e  /etc/apt/sources.list.d/ubuntu-toolchain-r-test-trusty.list ]; then
