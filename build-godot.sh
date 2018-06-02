@@ -189,17 +189,11 @@ function uwp {
   cd uwp_template_Win32 && zip -q -9 -r ../templates/uwp_x86_release.zip * && cd ..
   cd uwp_template_Win32_debug && zip -q -9 -r ../templates/uwp_x86_debug.zip * && cd ..
 
-  cp godot-uwp/win_x86/godot.uwp.opt.debug.32.exe templates/uwp_32_debug.exe
-  cp godot-uwp/win_x86/godot.uwp.opt.32.exe templates/uwp_32_release.exe
-
   # x64
   cp godot-uwp/uwp_amd64/godot.uwp.opt.64.x64.exe uwp_template_x64/godot.uwp.exe
   cp godot-uwp/uwp_amd64/godot.uwp.opt.debug.64.x64.exe uwp_template_x64_debug/godot.uwp.exe
   cd uwp_template_x64 && zip -q -9 -r ../templates/uwp_x64_release.zip * && cd ..
   cd uwp_template_x64_debug && zip -q -9 -r ../templates/uwp_x64_debug.zip * && cd ..
-
-  cp godot-uwp/win_amd64/godot.uwp.opt.debug.64.exe templates/uwp_64_debug.exe
-  cp godot-uwp/win_amd64/godot.uwp.opt.64.exe templates/uwp_64_release.exe
 
   rm -rf uwp_template_*
 } 
