@@ -14,6 +14,18 @@ net user Administrator /active:no
 
 :BUILD
 
+rd /s /q godot
+git clone https://github.com/godotengine/godot.git
+
+cd godot
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+git checkout -b 3.0 origin/3.0
+git branch --set-upstream-to=origin/3.0 3.0
+git reset --hard
+git pull
+cd ..
+
 set BUILD_NAME=official
 set SCONS=call scons -j8 verbose=no warnings=no progress=no
 set OPTIONS=builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no

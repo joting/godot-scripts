@@ -388,7 +388,9 @@ function android {
 }
 
 function javascript {
-  export EMSCRIPTEN_ROOT="/home/hp/Apps/emsdk-portable/emscripten/1.37.34"
+  source /home/hp//Apps/emsdk-portable/emsdk_env.sh
+  export EMSCRIPTEN_ROOT="/home/hp/Apps/emsdk-portable/emscripten/1.38.4"
+  export EM_CONFIG=/home/hp/.emscripten
   export SCONS="/usr/bin/scons -j8 verbose=no warnings=no progress=no"
   export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
 
@@ -412,4 +414,4 @@ function javascript {
   cp godot-javascript/bin/godot.javascript.opt.debug.zip templates/webassembly_debug.zip
 }
 
-$3 2>&1 | tee build-godot-$2.log
+$3 2>&1 | tee build-godot-$3.log
