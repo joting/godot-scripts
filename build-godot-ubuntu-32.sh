@@ -9,17 +9,16 @@ fi
 
 MONO_VERSION=$1
 
-if [ ! -e /etc/apt/sources.list.d/mono-official-stable.list ]; then
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-  sudo apt-get install -y apt-transport-https
-  echo "deb https://download.mono-project.com/repo/ubuntu trusty/snapshots/${MONO_VERSION} main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-fi
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+sudo apt-get install -y apt-transport-https
+echo "deb https://download.mono-project.com/repo/ubuntu trusty/snapshots/${MONO_VERSION} main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
 
 if [ ! -e  /etc/apt/sources.list.d/ubuntu-toolchain-r-test-trusty.list ]; then
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 fi
 
 sudo apt-get update -qq
+sudo apt-get -y upgrade
 sudo apt-get install -y gcc-8 g++-8 libx11-dev libxcursor-dev libxrandr-dev libasound2-dev libpulse-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libxi-dev libxinerama-dev git scons mono-complete msbuild
 sudo apt-get remove -y yasm
 

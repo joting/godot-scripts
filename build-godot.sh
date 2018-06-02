@@ -12,11 +12,17 @@ fi
 export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
 export SSHOPTS="-i /home/hp/.ssh/id_rsa -oStrictHostKeyChecking=no "
 export GODOT_VERSION=$1
+export MONO_VERSION=$2
 
 function get-domain-ip {
+  rx='([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])'
+
   domain=$1
   mac=$(sudo virsh domiflist ${domain} | tail -n-2 | awk '{print $5}')
-  ip=$(sudo virsh net-dhcp-leases default-nat | grep $mac | awk '{print $5}' | cut -d/ -f1)
+  ip=""
+  while [[ ! "$ip" =~ ^$rx\.$rx\.$rx\.$rx$ ]]; do
+    ip=$(sudo virsh net-dhcp-leases default-nat | grep $mac | awk '{print $5}' | cut -d/ -f1)
+  done
 
   echo $ip
 }
@@ -61,7 +67,7 @@ function ubuntu_32 {
 
   scp $SSHOPTS build-godot-ubuntu-32.sh user@${ip}:~/build-godot.sh
   scp $SSHOPTS -r mono-glue user@${ip}:~/
-  ssh $SSHOPTS user@${ip} bash build-godot.sh
+  ssh $SSHOPTS user@${ip} bash build-godot.sh ${MONO_VERSION}
   scp $SSHOPTS user@${ip}:~/godot/bin/* godot-ubuntu-32
   ssh $SSHOPTS user@${ip} sudo shutdown -h now || /bin/true
 
@@ -102,7 +108,7 @@ function ubuntu_64 {
 
   scp $SSHOPTS build-godot-ubuntu-64.sh user@${ip}:~/build-godot.sh
   scp $SSHOPTS -r mono-glue user@${ip}:~/
-  ssh $SSHOPTS user@${ip} bash build-godot.sh
+  ssh $SSHOPTS user@${ip} bash build-godot.sh ${MONO_VERSION}
   scp $SSHOPTS user@${ip}:~/godot/bin/* godot-ubuntu-64
   ssh $SSHOPTS user@${ip} sudo shutdown -h now || /bin/true
 
@@ -144,18 +150,17 @@ function ubuntu_64 {
 
 function uwp {
   boot-domain godot-win10
-  mkdir -p godot-windows
+  mkdir -p godot-uwp
 
   scp $SSHOPTS build-godot-uwp.bat user@${ip}:
   scp $SSHOPTS -r mono-glue user@${ip}:
 
   ssh $SSHOPTS user@${ip} build-godot-uwp.bat
-  scp $SSHOPTS -r user@${ip}:binaries/* godot-windows 
+  scp $SSHOPTS -r user@${ip}:binaries/* godot-uwp
   ssh $SSHOPTS user@${ip} "shutdown /s /t 0" || /bin/true
 
   mkdir -p templates 
   rm -f templates/uwp*
-  rm -f templates/windows*
 
   rm -rf angle*
   wget -c https://github.com/GodotBuilder/godot-builds/releases/download/_tools/angle.7z
@@ -173,45 +178,62 @@ function uwp {
   done
 
   # ARM
-  cp godot-windows/uwp_arm/godot.uwp.opt.32.arm.exe uwp_template_ARM/godot.uwp.exe
-  cp godot-windows/uwp_arm/godot.uwp.opt.debug.32.arm.exe uwp_template_ARM_debug/godot.uwp.exe
+  cp godot-uwp/uwp_arm/godot.uwp.opt.32.arm.exe uwp_template_ARM/godot.uwp.exe
+  cp godot-uwp/uwp_arm/godot.uwp.opt.debug.32.arm.exe uwp_template_ARM_debug/godot.uwp.exe
   cd uwp_template_ARM && zip -q -9 -r ../templates/uwp_arm_release.zip * && cd ..
   cd uwp_template_ARM_debug && zip -q -9 -r ../templates/uwp_arm_debug.zip * && cd ..
 
   # Win32
-  cp godot-windows/uwp_x86/godot.uwp.opt.32.x86.exe uwp_template_Win32/godot.uwp.exe
-  cp godot-windows/uwp_x86/godot.uwp.opt.debug.32.x86.exe uwp_template_Win32_debug/godot.uwp.exe
+  cp godot-uwp/uwp_x86/godot.uwp.opt.32.x86.exe uwp_template_Win32/godot.uwp.exe
+  cp godot-uwp/uwp_x86/godot.uwp.opt.debug.32.x86.exe uwp_template_Win32_debug/godot.uwp.exe
   cd uwp_template_Win32 && zip -q -9 -r ../templates/uwp_x86_release.zip * && cd ..
   cd uwp_template_Win32_debug && zip -q -9 -r ../templates/uwp_x86_debug.zip * && cd ..
 
-  cp godot-windows/win_x86/godot.windows.opt.debug.32.exe templates/windows_32_debug.exe
-  cp godot-windows/win_x86/godot.windows.opt.32.exe templates/windows_32_release.exe
+  cp godot-uwp/win_x86/godot.uwp.opt.debug.32.exe templates/uwp_32_debug.exe
+  cp godot-uwp/win_x86/godot.uwp.opt.32.exe templates/uwp_32_release.exe
 
   # x64
-  cp godot-windows/uwp_amd64/godot.uwp.opt.64.x64.exe uwp_template_x64/godot.uwp.exe
-  cp godot-windows/uwp_amd64/godot.uwp.opt.debug.64.x64.exe uwp_template_x64_debug/godot.uwp.exe
+  cp godot-uwp/uwp_amd64/godot.uwp.opt.64.x64.exe uwp_template_x64/godot.uwp.exe
+  cp godot-uwp/uwp_amd64/godot.uwp.opt.debug.64.x64.exe uwp_template_x64_debug/godot.uwp.exe
   cd uwp_template_x64 && zip -q -9 -r ../templates/uwp_x64_release.zip * && cd ..
   cd uwp_template_x64_debug && zip -q -9 -r ../templates/uwp_x64_debug.zip * && cd ..
 
-  cp godot-windows/win_amd64/godot.windows.opt.debug.64.exe templates/windows_64_debug.exe
-  cp godot-windows/win_amd64/godot.windows.opt.64.exe templates/windows_64_release.exe
+  cp godot-uwp/win_amd64/godot.uwp.opt.debug.64.exe templates/uwp_64_debug.exe
+  cp godot-uwp/win_amd64/godot.uwp.opt.64.exe templates/uwp_64_release.exe
 
   rm -rf uwp_template_*
 } 
 
 function windows {
+  mkdir -p godot-windows
+  boot-domain godot-fedora28
+
+  scp $SSHOPTS build-godot-windows.sh user@${ip}:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue user@${ip}:~/
+  ssh $SSHOPTS user@${ip} bash build-godot.sh ${MONO_VERSION}
+  scp $SSHOPTS user@${ip}:~/godot/bin/* godot-windows
+  ssh $SSHOPTS user@${ip} sudo shutdown -h now || /bin/true
+
   mkdir -p release-${GODOT_VERSION}
   rm -f release-${GODOT_VERSION}/*win*zip
 
-  cp godot-windows/win_amd64/godot.windows.opt.tools.64.exe Godot_v${GODOT_VERSION}_win64.exe
+  cp godot-windows/godot.windows.opt.tools.64.exe Godot_v${GODOT_VERSION}_win64.exe
   zip -q -9 Godot_v${GODOT_VERSION}_win64.exe.zip Godot_v${GODOT_VERSION}_win64.exe
   mv Godot_v${GODOT_VERSION}_win64.exe.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_win64.exe
 
-  cp godot-windows/win_x86/godot.windows.opt.tools.32.exe Godot_v${GODOT_VERSION}_win32.exe
+  cp godot-windows/godot.windows.opt.tools.32.exe Godot_v${GODOT_VERSION}_win32.exe
   zip -q -9 Godot_v${GODOT_VERSION}_win32.exe.zip Godot_v${GODOT_VERSION}_win32.exe
   mv Godot_v${GODOT_VERSION}_win32.exe.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_win32.exe
+
+  mkdir -p templates
+  rm -rf templates/*win*
+
+  cp godot-windows/godot.windows.opt.64.exe templates/windows_64_release.exe
+  cp godot-windows/godot.windows.opt.debug.64.exe templates/windows_64_debug.exe
+  cp godot-windows/godot.windows.opt.32.exe templates/windows_32_release.exe
+  cp godot-windows/godot.windows.opt.debug.32.exe templates/windows_32_debug.exe
 
   mkdir -p mono/release-${GODOT_VERSION}
   rm -f mono/release-${GODOT_VERSION}/*win*
@@ -221,25 +243,25 @@ function windows {
 
   # Win32
   mkdir -p Godot_v${GODOT_VERSION}_mono_win32
-  cp godot-windows/win_x86/godot.windows.opt.tools.32.mono.exe Godot_v${GODOT_VERSION}_mono_win32/Godot_v${GODOT_VERSION}_mono_win32.exe
-  cp godot-windows/win_x86/*.dll Godot_v${GODOT_VERSION}_mono_win32
+  cp godot-windows/godot.windows.opt.tools.32.mono.exe Godot_v${GODOT_VERSION}_mono_win32/Godot_v${GODOT_VERSION}_mono_win32.exe
+  cp godot-windows/*.dll Godot_v${GODOT_VERSION}_mono_win32
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win32.zip Godot_v${GODOT_VERSION}_mono_win32
   mv Godot_v${GODOT_VERSION}_mono_win32.zip mono/release-${GODOT_VERSION}
   rm -rf Godot_v${GODOT_VERSION}_mono_win32
 
-  cp godot-windows/win_x86/godot.windows.opt.debug.32.mono.exe mono/templates/windows_32_debug.exe
-  cp godot-windows/win_x86/godot.windows.opt.32.mono.exe mono/templates/windows_32_release.exe
+  cp godot-windows/godot.windows.opt.debug.32.mono.exe mono/templates/windows_32_debug.exe
+  cp godot-windows/godot.windows.opt.32.mono.exe mono/templates/windows_32_release.exe
 
   # x64
   mkdir -p Godot_v${GODOT_VERSION}_mono_win64
-  cp godot-windows/win_amd64/godot.windows.opt.tools.64.mono.exe Godot_v${GODOT_VERSION}_mono_win64/Godot_v${GODOT_VERSION}_mono_win64.exe
-  cp godot-windows/win_amd64/*.dll Godot_v${GODOT_VERSION}_mono_win64
+  cp godot-windows/godot.windows.opt.tools.64.mono.exe Godot_v${GODOT_VERSION}_mono_win64/Godot_v${GODOT_VERSION}_mono_win64.exe
+  cp godot-windows/*.dll Godot_v${GODOT_VERSION}_mono_win64
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win64.zip Godot_v${GODOT_VERSION}_mono_win64
   mv Godot_v${GODOT_VERSION}_mono_win64.zip mono/release-${GODOT_VERSION}
   rm -rf Godot_v${GODOT_VERSION}_mono_win64
 
-  cp godot-windows/win_amd64/godot.windows.opt.debug.64.mono.exe mono/templates/windows_64_debug.exe
-  cp godot-windows/win_amd64/godot.windows.opt.64.mono.exe mono/templates/windows_64_release.exe
+  cp godot-windows/godot.windows.opt.debug.64.mono.exe mono/templates/windows_64_debug.exe
+  cp godot-windows/godot.windows.opt.64.mono.exe mono/templates/windows_64_release.exe
 }
 
 function macos {
@@ -255,7 +277,7 @@ function macos {
   
   scp $SSHOPTS build-godot-macosx.sh hp@192.168.112.137:~/build-godot.sh
   scp $SSHOPTS -r mono-glue hp@192.168.112.137:~/
-  ssh $SSHOPTS hp@192.168.112.137 bash build-godot.sh
+  ssh $SSHOPTS hp@192.168.112.137 bash build-godot.sh ${MONO_VERSION}
   scp $SSHOPTS hp@192.168.112.137:~/godot/bin/* godot-macosx
   ssh $SSHOPTS hp@192.168.112.137 sudo shutdown -h now || /bin/true
 

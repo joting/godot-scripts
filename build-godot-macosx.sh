@@ -2,12 +2,19 @@
 
 set -e
 
+if [ -z $1 ]; then
+  echo "Usage: $0 <mono version"
+  exit 1
+fi
+
+MONO_VERSION=$1
+
 export BUILD_NAME=official
 export OPTIONS="builtin_libpng=yes builtin_openssl=yes builtin_zlib=yes gdnative_wrapper=yes debug_symbols=no"
 export SCONS="scons -j8 verbose=no warnings=no progress=no"
 
-export MONO32_PREFIX=/Library/Frameworks/Mono.framework/Versions/5.8.1/
-export MONO64_PREFIX=/Library/Frameworks/Mono.framework/Versions/5.8.1/
+export MONO32_PREFIX=/Library/Frameworks/Mono.framework/Versions/$(echo ${MONO_VERSION} | cut -d. -f 1,2,3)/
+export MONO64_PREFIX=/Library/Frameworks/Mono.framework/Versions/$(echo ${MONO_VERSION} | cut -d. -f 1,2,3)/
 
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 
