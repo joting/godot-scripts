@@ -34,20 +34,20 @@ git pull
 
 cp ../mono-glue/* modules/mono/glue
 
-$SCONS platform=osx bits=fat $OPTIONS tools=yes target=release_debug use_static_cpp=yes use_lto=yes
-$SCONS platform=osx bits=fat $OPTIONS tools=no target=release_debug use_static_cpp=yes use_lto=yes
-$SCONS platform=osx bits=fat $OPTIONS tools=no target=release use_static_cpp=yes use_lto=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=yes target=release_debug use_static_cpp=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=no target=release_debug use_static_cpp=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=no target=release use_static_cpp=yes
 
-$SCONS platform=osx bits=fat $OPTIONS tools=yes target=release_debug use_static_cpp=yes module_mono_enabled=yes mono_static=yes use_lto=yes
-$SCONS platform=osx bits=fat $OPTIONS tools=no target=release_debug use_static_cpp=yes module_mono_enabled=yes mono_static=yes use_lto=yes
-$SCONS platform=osx bits=fat $OPTIONS tools=no target=release use_static_cpp=yes module_mono_enabled=yes mono_static=yes use_lto=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=yes target=release_debug use_static_cpp=yes module_mono_enabled=yes mono_static=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=no target=release_debug use_static_cpp=yes module_mono_enabled=yes mono_static=yes
+$SCONS platform=osx bits=fat $OPTIONS tools=no target=release use_static_cpp=yes module_mono_enabled=yes mono_static=yes
 
-$SCONS platform=iphone arch=arm $OPTIONS tools=no target=release_debug use_lto=yes
-$SCONS platform=iphone arch=arm $OPTIONS tools=no target=release use_lto=yes
-$SCONS platform=iphone arch=arm64 $OPTIONS tools=no target=release_debug use_lto=yes
-$SCONS platform=iphone arch=arm64 $OPTIONS tools=no target=release use_lto=yes
-$SCONS platform=iphone arch=x86 $OPTIONS tools=no target=release_debug use_lto=yes
-$SCONS platform=iphone arch=x86 $OPTIONS tools=no target=release use_lto=yes
+$SCONS platform=iphone arch=arm $OPTIONS tools=no target=release_debug
+$SCONS platform=iphone arch=arm $OPTIONS tools=no target=release
+$SCONS platform=iphone arch=arm64 $OPTIONS tools=no target=release_debug
+$SCONS platform=iphone arch=arm64 $OPTIONS tools=no target=release
+$SCONS platform=iphone arch=x86 $OPTIONS tools=no target=release_debug
+$SCONS platform=iphone arch=x86 $OPTIONS tools=no target=release
 
 lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86.a -output bin/libgodot.iphone.opt.fat
 lipo -create bin/libgodot.iphone.opt.debug.arm.a bin/libgodot.iphone.opt.debug.arm64.a bin/libgodot.iphone.opt.debug.x86.a -output bin/libgodot.iphone.opt.debug.fat
