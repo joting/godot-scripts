@@ -212,11 +212,13 @@ function windows {
   rm -f release-${GODOT_VERSION}/*win*zip
 
   cp godot-windows/godot.windows.opt.tools.64.exe Godot_v${GODOT_VERSION}_win64.exe
+  strip Godot_v${GODOT_VERSION}_win64.exe
   zip -q -9 Godot_v${GODOT_VERSION}_win64.exe.zip Godot_v${GODOT_VERSION}_win64.exe
   mv Godot_v${GODOT_VERSION}_win64.exe.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_win64.exe
 
   cp godot-windows/godot.windows.opt.tools.32.exe Godot_v${GODOT_VERSION}_win32.exe
+  strip Godot_v${GODOT_VERSION}_win32.exe
   zip -q -9 Godot_v${GODOT_VERSION}_win32.exe.zip Godot_v${GODOT_VERSION}_win32.exe
   mv Godot_v${GODOT_VERSION}_win32.exe.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_win32.exe
@@ -228,6 +230,7 @@ function windows {
   cp godot-windows/godot.windows.opt.debug.64.exe templates/windows_64_debug.exe
   cp godot-windows/godot.windows.opt.32.exe templates/windows_32_release.exe
   cp godot-windows/godot.windows.opt.debug.32.exe templates/windows_32_debug.exe
+  strip templates/windows*.exe
 
   mkdir -p mono/release-${GODOT_VERSION}
   rm -f mono/release-${GODOT_VERSION}/*win*
@@ -238,6 +241,7 @@ function windows {
   # Win32
   mkdir -p Godot_v${GODOT_VERSION}_mono_win32
   cp godot-windows/godot.windows.opt.tools.32.mono.exe Godot_v${GODOT_VERSION}_mono_win32/Godot_v${GODOT_VERSION}_mono_win32.exe
+  strip Godot_v${GODOT_VERSION}_mono_win32/Godot_v${GODOT_VERSION}_mono_win32.exe
   cp godot-windows/*.dll Godot_v${GODOT_VERSION}_mono_win32
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win32.zip Godot_v${GODOT_VERSION}_mono_win32
   mv Godot_v${GODOT_VERSION}_mono_win32.zip mono/release-${GODOT_VERSION}
@@ -249,6 +253,7 @@ function windows {
   # x64
   mkdir -p Godot_v${GODOT_VERSION}_mono_win64
   cp godot-windows/godot.windows.opt.tools.64.mono.exe Godot_v${GODOT_VERSION}_mono_win64/Godot_v${GODOT_VERSION}_mono_win64.exe
+  strip Godot_v${GODOT_VERSION}_mono_win64/Godot_v${GODOT_VERSION}_mono_win64.exe
   cp godot-windows/*.dll Godot_v${GODOT_VERSION}_mono_win64
   zip -r -q -9 Godot_v${GODOT_VERSION}_mono_win64.zip Godot_v${GODOT_VERSION}_mono_win64
   mv Godot_v${GODOT_VERSION}_mono_win64.zip mono/release-${GODOT_VERSION}
@@ -256,6 +261,8 @@ function windows {
 
   cp godot-windows/godot.windows.opt.debug.64.mono.exe mono/templates/windows_64_debug.exe
   cp godot-windows/godot.windows.opt.64.mono.exe mono/templates/windows_64_release.exe
+
+  strip mono/templates/windows*.exe
 }
 
 function macos {
