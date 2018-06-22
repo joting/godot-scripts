@@ -12,7 +12,7 @@ VERSION=$1
 FILE_VERSION=$2
 MONO_VERSION=$3
 
-./build-godot.sh ${FILE_VERSION} mono-glue
+./build-godot.sh ${FILE_VERSION} ${MONO_VERSION}  mono-glue
 echo "uwp windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P 2 -n 1 ./build-godot.sh ${FILE_VERSION} ${MONO_VERSION}
 
 ./build-templates.sh ${VERSION} ${FILE_VERSION}
