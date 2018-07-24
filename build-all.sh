@@ -18,6 +18,6 @@ echo "uwp windows macos ubuntu_32 ubuntu_64 android javascript" | xargs -P 2 -n 
 ./build-templates.sh ${VERSION} ${FILE_VERSION}
 
 pushd godot-mono-glue
-git archive $FILE_VERSION --prefix=godot-$FILE_VERSION/ -o ../release-$FILE_VERSION/godot-$FILE_VERSION.tar.xz
+git archive $FILE_VERSION --prefix=godot-$FILE_VERSION/ | xz > ../release-$FILE_VERSION/godot-$FILE_VERSION.tar.xz
 popd
 sha256sum release-$FILE_VERSION/godot-$FILE_VERSION.tar.xz > release-$FILE_VERSION/godot-$FILE_VERSION.tar.xz.sha256
