@@ -126,6 +126,11 @@ function ubuntu_64 {
   mv Godot_v${GODOT_VERSION}_linux_server.64.zip release-${GODOT_VERSION}
   rm Godot_v${GODOT_VERSION}_linux_server.64
 
+  cp godot-ubuntu-64/godot_server.server.opt.tools.64 Godot_v${GODOT_VERSION}_linux_headless.64
+  zip -q -9 Godot_v${GODOT_VERSION}_linux_headless.64.zip Godot_v${GODOT_VERSION}_linux_headless.64
+  mv Godot_v${GODOT_VERSION}_linux_headless.64.zip release-${GODOT_VERSION}
+  rm Godot_v${GODOT_VERSION}_linux_headless.64
+
   cp godot-ubuntu-64/godot.x11.opt.tools.64 Godot_v${GODOT_VERSION}_x11.64
   zip -q -9 Godot_v${GODOT_VERSION}_x11.64.zip Godot_v${GODOT_VERSION}_x11.64
   mv Godot_v${GODOT_VERSION}_x11.64.zip release-${GODOT_VERSION}

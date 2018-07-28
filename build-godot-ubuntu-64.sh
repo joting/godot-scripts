@@ -54,3 +54,4 @@ $SCONS platform=x11 CC=$CC CXX=$CXX $OPTIONS tools=no target=release use_static_
 
 $SCONS platform=server CC=$CC CXX=$CXX $OPTIONS tools=no target=release_debug use_static_cpp=yes use_lto=yes
 $SCONS platform=server CC=$CC CXX=$CXX $OPTIONS tools=no target=release use_static_cpp=yes use_lto=yes
+$SCONS platform=server CC=$CC CXX=$CXX $OPTIONS tools=yes target=release_debug use_static_cpp=yes use_lto=yes
