@@ -19,7 +19,7 @@ fi
 
 sudo apt-get update -qq
 sudo apt-get -y upgrade
-sudo apt-get install -y gcc-8 g++-8 libx11-dev libxcursor-dev libxrandr-dev libasound2-dev libpulse-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libxi-dev libxinerama-dev git scons mono-complete msbuild
+sudo apt-get install -y gcc-8 g++-8 libudev-dev libx11-dev libxcursor-dev libxrandr-dev libasound2-dev libpulse-dev libfreetype6-dev libgl1-mesa-dev libglu1-mesa-dev libxi-dev libxinerama-dev git scons mono-complete msbuild
 sudo apt-get remove -y yasm
 
 export BUILD_NAME=official
