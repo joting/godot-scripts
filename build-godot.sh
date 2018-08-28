@@ -275,17 +275,17 @@ function macos {
   mkdir -p godot-macosx
   sudo bash /media/disk2/hp/macosx/OSX-KVM/godot.sh || /bin/true
 
-  while ! tcping -t 1 192.168.112.137 22 &>/dev/null; do
+  while ! tcping -t 1 192.168.100.137 22 &>/dev/null; do
     sleep 1
   done
  
   sleep 30s
   
-  scp $SSHOPTS build-godot-macosx.sh hp@192.168.112.137:~/build-godot.sh
-  scp $SSHOPTS -r mono-glue hp@192.168.112.137:~/
-  ssh $SSHOPTS hp@192.168.112.137 bash build-godot.sh ${MONO_VERSION}
-  scp $SSHOPTS hp@192.168.112.137:~/godot/bin/* godot-macosx
-  ssh $SSHOPTS hp@192.168.112.137 sudo shutdown -h now || /bin/true
+  scp $SSHOPTS build-godot-macosx.sh hp@192.168.100.137:~/build-godot.sh
+  scp $SSHOPTS -r mono-glue hp@192.168.100.137:~/
+  ssh $SSHOPTS hp@192.168.100.137 bash build-godot.sh ${MONO_VERSION}
+  scp $SSHOPTS hp@192.168.100.137:~/godot/bin/* godot-macosx
+  ssh $SSHOPTS hp@192.168.100.137 sudo shutdown -h now || /bin/true
 
   mkdir -p templates
   rm -f templates/osx*
