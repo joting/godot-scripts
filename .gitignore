@@ -10,6 +10,9 @@ godot-windows/
 mono-glue/
 release-*
 templates
+godot
+temp/
+packed-*
 
 *.swp
 *.log
